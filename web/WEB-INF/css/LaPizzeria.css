@@ -1,0 +1,75 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06-03-2015, 15:37:01
+    Author     : OBS
+*/
+.main {
+    background: #eee
+}
+.body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 850px;
+    height: 100%;
+    text-align: center;
+    margin: 20px auto;
+    border: activeborder;
+}
+.header {
+    height: 125px;
+    background: #aaa;
+}
+.leftMenu {
+    float: left;
+    height: 600px;
+    width: 20%;
+ }
+.rightMenu {
+    float: left;
+    height: 600px;
+    width: 80%;		
+ }
+.footer {
+    height: 60px;
+    clear: left;
+    background: #aaa;
+}
+.logo {
+    height: 100px;
+    width: 155px;
+    float: left;
+    margin-left: 30px;
+    margin-top: -20px;
+}
+.logoText {
+    float: left;
+    margin: 20px 0 0 70px;
+    /* font styles apply to text within alt tags */
+    font-family: 'American Typewriter', Courier, monospace;
+    font-size: 50px;
+    color: #333;
+}
+.widgetBar {
+    height: 50px;
+    width: 850px;
+    float: right;
+    background: #ccc;
+}
+.headerWidget {
+    width: 100px;
+    margin: 20px 2px;
+    font-size: small;
+    float: right;
+    line-height: 25px;
+    background: #aaa;
+}
+.hr {
+    border: 0;
+    background-color: #333;
+    height: 1px;
+    margin: 0 25px;
+    width: 300px;
+}

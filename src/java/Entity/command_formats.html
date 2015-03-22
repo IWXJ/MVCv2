@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>/Backend?cmd=listPizza&order=name</div>
+        <div>/Backend?cmd=listPizza&order=price</div>
+        <div>/Backend?cmd=addPizza&name=Margurita&price=22&desc=tomato and cheese</div>
+        <div><br>The returned object is : DUPLICATE<br></div>
+        <div><br>/Backend?cmd=createCustomer&userid=a&password=b&username=c&street=d&town=e&zip=1&tel=1 </div>
+        <div><br>The returned object is : The check constraint 'TEL_CONSTRAINT' was violated while performing an INSERT or UPDATE on table '"APP"."CUSTOMER"'.</div>
+        <div><br>The returned object is : The check constraint 'ZIP_CONSTRAINT' was violated while performing an INSERT or UPDATE on table '"APP"."CUSTOMER"'.</div>
+        <div><br>The returned object is : OK</div>
+        <div><br>The returned object is : DUPLICATE<br></div>
+
+        <div><br>/Backend?cmd=listCustomers </div>
+        <div>/Backend?cmd=login&userid=a&password=b </div>
+        
+        
+        <div><br>The returned object is : OK</div>
+        <div><br>The returned object is : INVALID<br></div>
+
+        <div><br>/Backend?cmd=toBasket&userid=a&name=b&quantity=c </div>
+        
+        <div>/Backend?cmd=confirmOrder</div>
+        <div>/Backend?cmd=confirmOrder&time=requested_time </div>
+        
+    </body>
+</html>

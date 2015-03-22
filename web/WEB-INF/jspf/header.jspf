@@ -1,0 +1,25 @@
+<%-- any content can be specified here e.g.: --%>
+<html>
+<head>
+    <title>La Pizzeria</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <link type="text/css" rel="stylesheet" href="/WEB-INF/css/LaPizzeria.css">
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <a href="/LaPizzeria/index.jsp">
+                <img src="LaPizzeria_logo.JPG" style="height:125px;" class="logo" alt="La Pizzeria logo">
+            </a>
+            <br>
+            <br>
+            <div class="headerWidget">
+                <a href="/LaPizzeria/registeruser.jsp">Register</a>
+            </div>
+            <div class="headerWidget">
+                <a href="/LaPizzeria/login.jsp">Login</a>
+            </div>
+            <div class="headerWidget">
+                <a href="/LaPizzeria/cart.jsp">View cart</a>
+            </div>
+        </div>
