@@ -30,7 +30,9 @@ import javax.servlet.http.HttpSession;
                            "/order.do",
                            "/deleteFromList.do",
                            "/addItemToList.do",
-                           "/menuSort.do"
+                           "/menuSort.do",
+                           "/validateemail.jsp",
+                           "/validateemail.do"
             })
 public class ControllerServlet extends HttpServlet {
         PrintWriter pw;
@@ -68,6 +70,8 @@ public class ControllerServlet extends HttpServlet {
                 doAddItemToList(request, response); 
                 break;
             case "/menuSort.do":        doSortMenu(request, response); break;
+            case "/validateemail.do":   doValidateEmail(request, response); break;
+            case "/validateemail.jsp":  showValidateEmail(request, response); break;
             case "/index.jsp":
             default:                    userPath = "/index.jsp"; break;
         }
@@ -228,7 +232,8 @@ public class ControllerServlet extends HttpServlet {
                 
 //        Object result = cust.addCustomer(email, password, name, address, city, zipcode, phone);
 //        if (result == "OK") {
-//            userPath = pageMenu;
+//            session.setAttribute("validateEmail", email);
+//            userPath = "/validateemail.jsp";
 //        } else if (result == "DUPLICATE") {
 //            userPath = pageLogin;
 //        }
@@ -290,7 +295,21 @@ public class ControllerServlet extends HttpServlet {
     private void doSortMenu(HttpServletRequest request, HttpServletResponse response) {
         showMenu(request, response);
     }
- 
+
+    private void doValidateEmail(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String email = (String) request.getParameter("email");
+        System.out.println(email);
+        showMenu(request, response);
+    }
+    
+    private void showValidateEmail(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String validateEmail = "obs@hotmail.dk";
+        session.setAttribute("validateEmail", validateEmail);
+        userPath = "/validateemail.jsp";
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
