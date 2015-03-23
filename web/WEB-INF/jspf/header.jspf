@@ -3,7 +3,8 @@
 <head>
     <title>La Pizzeria</title>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-    <link type="text/css" rel="stylesheet" href="/WEB-INF/css/LaPizzeria.css">
+    <!--<link type="text/css" rel="stylesheet" href="/WEB-INF/css/LaPizzeria.css">-->
+    <link type="text/css" rel="stylesheet" href="../css/LaPizzeria.css">
 </head>
 <body>
     <div class="main">
