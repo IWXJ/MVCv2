@@ -7,7 +7,6 @@
 <%@ page language="java" contentType="text/html; charset=windows-1252"
     pageEncoding="windows-1252"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-    <script type="text/javascript" src="../js/validation.js"/>
 
     <div class="rightMenu">
         <p><h1>Login</h1>

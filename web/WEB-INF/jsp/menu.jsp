@@ -19,9 +19,9 @@
             <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
                     <th>Order</th>
-                    <th><a href="/LaPizzeria/menu.jsp?sortOrder=name">Item</a></th>
+                    <th><a href="/LaPizzeriaV2/menu.jsp?sortOrder=name">Item</a></th>
                     <th>Description</th>
-                    <th><a href="/LaPizzeria/menu.jsp?sortOrder=price">Price</a></th>
+                    <th><a href="/LaPizzeriaV2/menu.jsp?sortOrder=price">Price</a></th>
                 </tr>
                 <tr>
                     <td>${item}</td>
@@ -54,14 +54,14 @@
                                 <td>${i}</td>
                             </c:when>
                             <c:otherwise>
-                                <td><a href="/LaPizzeria/menu.jsp?page=${i}">${i}</a></td>
+                                <td><a href="/LaPizzeriaV2/menu.jsp?page=${i}">${i}</a></td>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </tr>
             </table>
             <c:if test="${currentPage lt noOfPages}">
-                <a href="/LaPizzeria/menu.jsp?page=${currentPage + 1}">Next</a>
+                <a href="/LaPizzeriaV2/menu.jsp?page=${currentPage + 1}">Next</a>
             </c:if>
     </div>
 
