@@ -17,7 +17,7 @@
         <p>
         <form method="POST" action="login.do">
                 <table>
-                    <tr><td>E-mail: </td><td><input type="text" name="email" onchange="validateEmail()"></td></tr>
+                    <tr><td>E-mail: </td><td><input type="text" name="email" onchange="validateEmail(this)"></td></tr>
                     <tr><td>Password: </td><td><input type="password" name="password"></td></tr>
                 </table>
                 <input type="submit" value="Login">
