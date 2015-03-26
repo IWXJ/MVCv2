@@ -28,9 +28,13 @@
             }
             return true;
         }
-
         function validatePhone(elem) {
             var x = elem.value;
+            if(pattern.test(x)) {
+                alert("Phone: Only numbers are allowed.");
+                return false;
+            }
+            
             if(x.length > 0 && isNaN(x)) {
                 alert("Phone: Only numbers are allowed.");
                 return false;
@@ -42,6 +46,34 @@
             }
             return true;
         }
+
+//        function validatePhone(phoneInput){  
+//            var pattern = "(?=[0-9]+$)(?=\\S+$).{8,8}";
+//            var OK = pattern.exec(phoneInput.value);  
+//            if (!OK) {
+//                window.alert(OK.input + " isn't a phone number with area code!");
+//                return false;
+//            }
+//            return true;
+//        }  
+//        function validateZipcode(zipcodeInput){  
+//            String pattern = "(?=[0-9]+$)(?=\\S+$).{4,4}";
+//            var OK = pattern.exec(zipcodeInput.value);  
+//            if (!OK) {
+//                window.alert(OK.input + " isn't a valid zipcode!");
+//                return false;
+//            }
+//            return true;
+//        }  
+//        function validateEmail(emailInput){  
+//            String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,12}";
+//            var OK = pattern.exec(zipcodeInput.value);  
+//            if (!OK) {
+//                window.alert(OK.input + " isn't a valid zipcode!");
+//                return false;
+//            }
+//            return true;
+//        }  
     </script>
 </head>
 <body>

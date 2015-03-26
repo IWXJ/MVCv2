@@ -240,6 +240,8 @@ public class ControllerServlet extends HttpServlet {
 //        else {
 //            userPath = pageRegisterUser;
 //        }
+        
+        
     }
     
     private void doLoginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {

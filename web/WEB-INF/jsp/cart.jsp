@@ -3,7 +3,6 @@
     Created on : 10-03-2015, 17:51:37
     Author     : OBS
 --%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=windows-1252"
     pageEncoding="windows-1252"%>
@@ -31,4 +30,7 @@
                     </tr>							
                 </c:forEach>
         </table>
+        <p>
+            Total price: ${cartList.totalprice}
+        </p>
     </div>
