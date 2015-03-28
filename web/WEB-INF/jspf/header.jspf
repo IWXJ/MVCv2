@@ -6,74 +6,41 @@
     <!--<link type="text/css" rel="stylesheet" href="/WEB-INF/css/LaPizzeria.css">-->
     <link type="text/css" rel="stylesheet" href="../css/LaPizzeria.css">
     <script type="text/javascript">
-        function validateEmail(elem) {
-            var x = elem.value;
-            if(x.length > 0 && x.indexOf("@") === -1) {
-                alert("E-mail is not correctly formatted.");
+        function validatePassword(passwordInput){
+            var pattern = /^(?=.*\d)(?=.*\w)(?=.*[^\w])(?!.*[^\S]).{6,}$/;
+            if (passwordInput.value.search(pattern) === -1) {
+                window.alert("\"" + passwordInput.value + "\" isn't a valid password!\nThe password needs to contain:\n"
+                             +"- at least one digit\n"
+                             +"- at least one letter character\n"
+                             +"- at least one non-digit/letter character");
                 return false;
             }
             return true;
-        }
-
-        function validateZipcode(elem) {
-            var x = elem.value;
-            if(x.length > 0 && isNaN(x)) {
-                alert("Zipcode: Only numbers are allowed.");
-                return false;
-            }
-
-            if(x.length > 0 && (x < 1000 || x > 9990)) {
-                alert("Zipcode must be between 1000 and 9990.");
+        }  
+        function validatePhone(phoneInput){
+            var pattern = "(?=[0-9]+$)(?=\\S+$).{8,8}";
+            if (phoneInput.value.search(pattern) === -1) {
+                window.alert("\"" + phoneInput.value + "\" isn't a valid phone number!");
                 return false;
             }
             return true;
-        }
-        function validatePhone(elem) {
-            var x = elem.value;
-            if(pattern.test(x)) {
-                alert("Phone: Only numbers are allowed.");
-                return false;
-            }
-            
-            if(x.length > 0 && isNaN(x)) {
-                alert("Phone: Only numbers are allowed.");
-                return false;
-            }
-
-            if(x.length > 0 && x < (20000000 || x > 99999999)) {
-                alert("Phone number format is wrong.");
+        }  
+        function validateZipcode(zipcodeInput){  
+            var pattern = "(?=[0-9]+$)(?=\\S+$).{4,4}";
+            if (zipcodeInput.value.search(pattern) === -1) {
+                window.alert("\"" + zipcodeInput.value + "\" isn't a valid zipcode!");
                 return false;
             }
             return true;
-        }
-
-//        function validatePhone(phoneInput){  
-//            var pattern = "(?=[0-9]+$)(?=\\S+$).{8,8}";
-//            var OK = pattern.exec(phoneInput.value);  
-//            if (!OK) {
-//                window.alert(OK.input + " isn't a phone number with area code!");
-//                return false;
-//            }
-//            return true;
-//        }  
-//        function validateZipcode(zipcodeInput){  
-//            String pattern = "(?=[0-9]+$)(?=\\S+$).{4,4}";
-//            var OK = pattern.exec(zipcodeInput.value);  
-//            if (!OK) {
-//                window.alert(OK.input + " isn't a valid zipcode!");
-//                return false;
-//            }
-//            return true;
-//        }  
-//        function validateEmail(emailInput){  
-//            String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,12}";
-//            var OK = pattern.exec(zipcodeInput.value);  
-//            if (!OK) {
-//                window.alert(OK.input + " isn't a valid zipcode!");
-//                return false;
-//            }
-//            return true;
-//        }  
+        }  
+        function validateEmail(emailInput){  
+            var pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,12}";
+            if (emailInput.value.search(pattern) === -1) {
+                window.alert("\"" + emailInput.value + " isn't a valid e-mail address!");
+                return false;
+            }
+            return true;
+        }  
     </script>
 </head>
 <body>
@@ -92,5 +59,8 @@
             </div>
             <div class="headerWidget">
                 <a href="/LaPizzeriaV2/cart.jsp">View cart</a>
+            </div>
+            <div class="headerWidget">
+                <a href="/LaPizzeriaV2/logout.do">Logout</a>
             </div>
         </div>

@@ -14,7 +14,7 @@
         <form method="POST" action="registerUser.do">
             <table>
                 <tr><td>E-mail: </td><td><input type="text" id="email" name="email" onchange="validateEmail(this)"></td></tr>
-                <tr><td>Password: </td><td><input type="password" name="password"></td></tr>
+                <tr><td>Password: </td><td><input type="password" name="password" onchange="validatePassword(this)"></td></tr>
                 <tr><td>Name: </td><td><input type="text" name="name"></td></tr>
                 <tr><td>Address: </td><td><input type="text" name="address"></td></tr>
                 <tr><td>Zip code: </td><td><input type="text" id="zipcode" name="zipcode" onchange="validateZipcode(this)"></td></tr>

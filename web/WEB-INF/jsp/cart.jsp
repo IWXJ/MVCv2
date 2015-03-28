@@ -9,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
     <div class="rightMenu">
         <p><h1>Your order list</h1>
-        <p>You may update the number of items or remove items from the list.
+        <p>You may update the number of items or remove items from the list.</p>
         <p> <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
                     <th>Quantity</th>
@@ -20,17 +20,26 @@
                 </tr>
                 <c:forEach items="${cartList}" var="item">
                     <tr>
-                    <td><form method="POST" action="addToCart.do?${item.name}">
-                            <input type="submit" value="Add"></form></td>
-                    <td><form method="POST" action="removeFromCart.do?${item.name}">
-                            <input type="submit" value="Remove"></form></td>
-                            <td>${item.quantity}</td>
-                            <td>${item.name}</td>
-                            <td>${item.price}</td>
-                    </tr>							
+                        <td><form method="POST" action="addToCart.do?${item.name}">
+                                <input type="submit" value="Add"></form></td>
+                        <td><form method="POST" action="removeFromCart.do?${item.name}">
+                                <input type="submit" value="Remove"></form></td>
+                                <td>${item.quantity}</td>
+                                <td>${item.name}</td>
+                                <td>${item.price}</td>
+                    </tr>
                 </c:forEach>
-        </table>
-        <p>
-            Total price: ${cartList.totalprice}
-        </p>
+                <tr>
+                    <th colspan="4" align="left">Total price: </th>
+                    <td>${orderTotalPrice}</td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table border="0">
+                <tr>
+                    <td><a href="/LaPizzeriaV2/cancelOrder.do">Cancel order</a></td>
+                    <td><a href="/LaPizzeriaV2/confirmOrder.do">Confirm order</a></td>
+                </tr>
+            </table>
     </div>

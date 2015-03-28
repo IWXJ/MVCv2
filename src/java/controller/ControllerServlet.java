@@ -32,7 +32,10 @@ import javax.servlet.http.HttpSession;
                            "/addItemToList.do",
                            "/menuSort.do",
                            "/validateemail.jsp",
-                           "/validateemail.do"
+                           "/validateemail.do",
+                           "/cancelOrder.do",
+                           "/confirmOrder.do",
+                           "/logout.do"
             })
 public class ControllerServlet extends HttpServlet {
         PrintWriter pw;
@@ -44,6 +47,8 @@ public class ControllerServlet extends HttpServlet {
         String pageLogin = "/login.jsp";
         String pageMenuAdmin = "/menuadmin.jsp";
         String pageRegisterUser = "/registeruser.jsp";
+        String pageCheckOut = "/checkout.jsp";
+        String pageValidateEmail = "/validateemail.jsp";
           
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,7 +76,9 @@ public class ControllerServlet extends HttpServlet {
                 break;
             case "/menuSort.do":        doSortMenu(request, response); break;
             case "/validateemail.do":   doValidateEmail(request, response); break;
-            case "/validateemail.jsp":  showValidateEmail(request, response); break;
+            case "/cancelOrder.do":     doCancelOrder(request, response); break;
+            case "/confirmOrder.do":    doConfirmOrder(request, response); break;
+            case "/logout.do":          doLogout(request, response); break;
             case "/index.jsp":
             default:                    userPath = "/index.jsp"; break;
         }
@@ -88,10 +95,10 @@ public class ControllerServlet extends HttpServlet {
     private void showCart(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String sessionId = (String) session.getAttribute("sessionId");
-        if (sessionId == null) {
-            userPath = pageLogin;
-            return;
-        } 
+//        if (sessionId == null) {
+//            userPath = pageLogin;
+//            return;
+//        } 
            
         Object returnObject = null;
 
@@ -232,8 +239,7 @@ public class ControllerServlet extends HttpServlet {
                 
 //        Object result = cust.addCustomer(email, password, name, address, city, zipcode, phone);
 //        if (result == "OK") {
-//            session.setAttribute("validateEmail", email);
-//            userPath = "/validateemail.jsp";
+//            showValidateEmail(email,request, response);
 //        } else if (result == "DUPLICATE") {
 //            userPath = pageLogin;
 //        }
@@ -305,11 +311,26 @@ public class ControllerServlet extends HttpServlet {
         showMenu(request, response);
     }
     
-    private void showValidateEmail(HttpServletRequest request, HttpServletResponse response) {
+    private void showValidateEmail(String emailToValidate, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+
+// Use input argument emailToValidate instead.
         String validateEmail = "obs@hotmail.dk";
         session.setAttribute("validateEmail", validateEmail);
-        userPath = "/validateemail.jsp";
+        userPath = pageValidateEmail;
+    }
+    
+    private void doCancelOrder(HttpServletRequest request, HttpServletResponse response) {
+    }
+    
+    private void doConfirmOrder(HttpServletRequest request, HttpServletResponse response) {
+        
+        userPath = pageCheckOut;
+    }
+
+    private void doLogout(HttpServletRequest request, HttpServletResponse response) {
+        
+        userPath = pageIndex;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

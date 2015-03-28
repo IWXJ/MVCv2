@@ -24,9 +24,12 @@
                         <td>${item.price}</td>
                 </tr>							
                 </c:forEach>
+                <tr>
+                    <th colspan="2" align="left">Total price: </th>
+                    <td>${orderTotalPrice}</td>
+                </tr>
             </table>
-            <form method="POST" action="confirmOrder.do?">
-                                    <input type="submit" value="Confirm"></form>
-            <form method="POST" action="deleteOrder.do?">
-                                    <input type="submit" value="Delete order"></form>
+        <p>
+            Thank you for shopping with us!
+        </p>
     </div>
