@@ -57,7 +57,10 @@
                 function processAlternativeDeliveryAddress() { 
                         $.ajax( {
                             type: 'POST',
-                            url: 'alternativeDeliveryAddress.do?alternativeAddressStreet=' + encodeURIComponent(document.getElementById('alternativeAddressStreet').value) + 'alternativeAddressZipcode=' + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value) + 'alternativeAddressCity=' + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value),
+                            url: 'alternativeDeliveryAddress.do?alternativeAddressStreet=' 
+                                + encodeURIComponent(document.getElementById('alternativeAddressStreet').value) + 'alternativeAddressZipcode=' 
+                                + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value) + 'alternativeAddressCity=' 
+                                + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value),
                             success: function(data) {
                                 $('#resultAlternativeDeliveryAddress').html(data);
                             }
