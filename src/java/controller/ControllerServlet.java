@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSession;
                            "/validateemail.do",
                            "/cancelOrder.do",
                            "/confirmOrder.do",
+                           "/alternativeDeliveryAddress.do",
                            "/logout.do"
             })
 public class ControllerServlet extends HttpServlet {
@@ -49,11 +50,13 @@ public class ControllerServlet extends HttpServlet {
         String pageRegisterUser = "/registeruser.jsp";
         String pageCheckOut = "/checkout.jsp";
         String pageValidateEmail = "/validateemail.jsp";
+        boolean redirect = true;
           
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         userPath = request.getRequestURI().substring(request.getContextPath().length());
         
+        redirect = true;
         switch (userPath) {
             case "/cart.jsp":           showCart(request, response); break;
             case "/checkout.jsp":       showCheckout(request, response); break;
@@ -78,18 +81,21 @@ public class ControllerServlet extends HttpServlet {
             case "/validateemail.do":   doValidateEmail(request, response); break;
             case "/cancelOrder.do":     doCancelOrder(request, response); break;
             case "/confirmOrder.do":    doConfirmOrder(request, response); break;
+            case "/alternativeDeliveryAddress.do":    doAlternativeDeliveryAddress(request, response); break;
             case "/logout.do":          doLogout(request, response); break;
             case "/index.jsp":
             default:                    userPath = "/index.jsp"; break;
         }
-        String url = "/WEB-INF/jsp" + userPath;
+        
+        if (redirect) {
+            String url = "/WEB-INF/jsp" + userPath;
 
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            try {
+                request.getRequestDispatcher(url).forward(request, response);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-
     }
 
     private void showCart(HttpServletRequest request, HttpServletResponse response) {
@@ -131,7 +137,7 @@ public class ControllerServlet extends HttpServlet {
 // Kode til at håndtere bladring
         HttpSession session = request.getSession();
         session.setAttribute("cartList", returnObject);
-        userPath = pageCart;
+        userPath = pageCheckOut;
     }    
 
     private void showMenu(HttpServletRequest request, HttpServletResponse response) {
@@ -326,6 +332,27 @@ public class ControllerServlet extends HttpServlet {
     private void doConfirmOrder(HttpServletRequest request, HttpServletResponse response) {
         
         userPath = pageCheckOut;
+    }
+
+    private void doAlternativeDeliveryAddress(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        System.out.println(request.getParameter("alternativeAddressStreet"));
+        System.out.println(request.getParameter("alternativeAddressZipcode"));
+        System.out.println(request.getParameter("alternativeAddressCity"));
+
+//        PrintWriter out = null;
+//        response.setContentType("text/html;charset=UTF-8");
+//            try {
+//                out = response.getWriter();
+//            } catch (IOException ex) {
+//                Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        
+//        if (out != null) {
+//            out.println("Your pizza will be delivered at this address.");
+//        }
+
+        redirect = false;
     }
 
     private void doLogout(HttpServletRequest request, HttpServletResponse response) {

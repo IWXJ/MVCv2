@@ -30,6 +30,42 @@
                 </tr>
             </table>
         <p>
+            Do you wish to have your pizzas delivered at an alternative address?
+            <input type="checkbox" name="alternativeAddressYes" id="alternativeAddressYes" onclick="showAlternativeDeliveryAddress()"/>
+            <div id="alternativeDeliveryAddress">
+                
+            </div>
+            <div id="resultAlternativeDeliveryAddress">
+                
+            </div>
+        <script src="../../jquery-1.11.0.js" type="text/javascript"></script>
+            <script type="text/javascript">
+//                var form = $('#alternativeDeliveryAddress');
+//                $( "#submitFormAlternativeDeliveryAddress" ).click(function(){
+//                    $.ajax({
+//                    type: form.attr('method'),
+//                    url: form.attr('action'),
+//                    data: value,
+//                    success: function (data) {
+//                    var result=data;
+////                    $('#resultAlternativeDeliveryAddress').attr("value",result);
+//                    $('#resultAlternativeDeliveryAddress').html(result);
+//                    }
+//                    });
+//                    return false;
+//                });
+                function processAlternativeDeliveryAddress() { 
+                        $.ajax( {
+                            type: 'POST',
+                            url: 'alternativeDeliveryAddress.do?alternativeAddressStreet=' + encodeURIComponent(document.getElementById('alternativeAddressStreet').value) + 'alternativeAddressZipcode=' + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value) + 'alternativeAddressCity=' + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value),
+                            success: function(data) {
+                                $('#resultAlternativeDeliveryAddress').html(data);
+                            }
+                        } );
+                    return false;
+                }
+            </script>
+        <p>
             Thank you for shopping with us!
         </p>
     </div>

@@ -5,6 +5,28 @@
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
     <!--<link type="text/css" rel="stylesheet" href="/WEB-INF/css/LaPizzeria.css">-->
     <link type="text/css" rel="stylesheet" href="../css/LaPizzeria.css">
+
+    <style>
+        .imageBox {
+            position: absolute;
+            visibility: hidden;
+            border: solid 1px #CCC;
+            padding: 5px;
+        }
+    </style>
+    <script type="text/javascript" language="javascript">
+        var http;
+        if (navigator.appName === "Microsoft Internet Explorer")
+            http = new ActiveXObject("Microsoft.XMLHTTP");
+        else
+            http = new XMLHttpRequest();
+
+        function sendRequest(action, responseHandler) {
+            http.open("GET", action);
+            http.onreadystatechange = responseHandler;
+            http.send(null);
+        }
+    </script>
     <script type="text/javascript">
         function validatePassword(passwordInput){
             var pattern = /^(?=.*\d)(?=.*\w)(?=.*[^\w])(?!.*[^\S]).{6,}$/;
@@ -34,13 +56,82 @@
             return true;
         }  
         function validateEmail(emailInput){  
-            var pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_])(?=\\S+$).{8,12}";
+            var pattern = /(?=.*[@#$%^&+=_])(?=\S+$)(?=.*[\.]).{3,}/;
             if (emailInput.value.search(pattern) === -1) {
                 window.alert("\"" + emailInput.value + " isn't a valid e-mail address!");
                 return false;
             }
             return true;
-        }  
+        }
+
+        var timeout;
+        function btnAlternativeDeliveryAddressClicked() {
+            if (http.readyState === 0 || http.readyState === 4) {
+                // the request object is free
+                var url = "localhost:8080/LaPizzeriaV2/doAlternativeDeliveryAddress.do";
+                var vAddress = document.getElementById("alternativeAddressStreet").value;
+                var vZipcode = document.getElementById("alternativeAddressZipcode").value;
+                var vCity = document.getElementById("alternativeAddressCity").value;
+                sendPOSTRequest((url + 
+                                "?alternativeDeliveryAddress=" + encodeURIComponent(vAddress) + 
+                                "&alternativeZipcode=" + encodeURIComponent(vZipcode) + 
+                                "&alternativeCity=" + encodeURIComponent(vCity)),
+                                responseReceivedAlternativeDeliveryAddress);
+            } else { // let's try again in .5 sec
+                window.clearTimeout(timeout);
+                timeout = window.setTimeout(btnAlternativeDeliveryAddressClicked, 500);
+            }
+        }
+
+        function responseReceivedAlternativeDeliveryAddress() {
+            if (http.readyState === 4) // operation completed?
+                try {
+                    if (http.status === 200) { // OK?
+                        var d = document.createElement("div");
+                        d.innerHTML = http.responseText; // parse HTML
+                        var t = d.getElementsByTagName("table")[0]; // extract table
+                        var r = document.getElementById("resultAlternativeDeliveryAddress");
+                        r.replaceChild(t, r.firstChild);
+                    } else
+                        alert("OwnError " + http.status);
+                } catch (e) { // may occur in case of network error
+                    alert(e);
+                }
+            return false;
+        }
+        function ShowPicture(id,show,img) {
+            if (show==="1"){
+              document.getElementById(id).style.visibility = "visible";
+              document.getElementById(id).childNodes[1].src = img;
+            }
+            else if (show==="0"){
+              document.getElementById(id).style.visibility = "hidden";
+            }
+        }
+        function addPizzaToMenuList(name,desc,price) {
+            var count = document.getElementById("xxx").childElementCount;
+            var e = document.getElementById("xxx");
+            var l = document.createElement("li");
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "person" + (count+1);
+            l.appendChild(input);
+            e.appendChild(l);
+        }
+        function showAlternativeDeliveryAddress() {
+            var e = document.getElementById("alternativeDeliveryAddress");
+            if(document.getElementById("alternativeAddressYes").checked) {
+                e.innerHTML = "<form name='alternativeDeliveryAddress' id='alternativeDeliveryAddress' onsubmit='processAlternativeDeliveryAddress();' action='alternativeDeliveryAddress.do' method='POST'><table>" +
+                              "<tr><td>Address:</td><td><input type='text' name='alternativeAddressStreet' id='alternativeAddressStreet'></td></tr>" + 
+                              "<tr><td>Zip code:</td><td><input type='text' name='alternativeAddressZipcode' id='alternativeAddressZipcode'></td></tr>" +
+                              "<tr><td>City:</td><td><input type='text' name='alternativeAddressCity' id='alternativeAddressCity'></td></tr></table>" + 
+//                              "<input type='submit' id='submitFormAlternativeDeliveryAddress' name='OK' title='OK' onclick='btnAlternativeDeliveryAddressClicked()'/>" +
+                              "<input type='submit' id='submitFormAlternativeDeliveryAddress' name='OK' title='OK'/>" +
+                              "</form>";
+            } else {
+                e.innerHTML = "";
+            }
+        }
     </script>
 </head>
 <body>

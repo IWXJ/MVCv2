@@ -28,7 +28,6 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <!--<select name="pizza">-->
                     <c:forEach items="${pizzaList}" var="pizza">
                         <tr>
                             <td>
@@ -38,10 +37,24 @@
                             <td>${pizza.name}</td>
                             <td>${pizza.desc}</td>
                             <td>${pizza.price}</td>
+                            <td><img class="hidden" id="image" src="LaPizzeria_logo.JPG"/> <span>Name</span></td>
                         </tr>							
                     </c:forEach>
-                <!--</select>-->
-                    
+
+<!--                <div id="xxx">
+                    <tr>
+                        <td>ABC</td>
+                        <td>Olive</td>
+                        <td>84.55</td>
+                        <td><a href="#" onclick="ShowPicture('Style',1, 'LaPizzeria_logo.JPG')" onMouseOut="ShowPicture('Style',0)">Click Here To Show Image</a>
+                            <div class="imageBox" id="Style">
+                                <img src="" />
+                            </div>
+                        </td>
+                        <td><input type="button" value="MORE" onclick="addPizzaToMenuList('ABC','Olive',48.00)"/></td>
+                        <td><img class="hidden" id="image" src="LaPizzeria_logo.JPG"/> <span>Name</span></td>
+                    </tr>
+                </div>-->
             </table>
             <c:if test="${currentPage != 1}">
                 <a href="menu.do?page=${currentPage - 1}">Previous</a>
