@@ -28,6 +28,8 @@ import javax.servlet.http.HttpSession;
                            "/login.do",
                            "/registerUser.do",
                            "/order.do",
+                           "/addToCart.do",
+                           "/removeFromCart.do",
                            "/deleteFromList.do",
                            "/addItemToList.do",
                            "/menuSort.do",
@@ -68,6 +70,8 @@ public class ControllerServlet extends HttpServlet {
                 doLoginUser(request, response);
                 break;
             case "/order.do":           doAddOrder(request, response); break;
+            case "/addToCart.do":       doAddToCart(request, response); break;
+            case "/removeFromCart.do":  doRemoveFromCart(request, response); break;
             case "/deleteFromList.do":  
                 doDeleteItemFromList(request, response); 
                 break;
@@ -217,6 +221,23 @@ public class ControllerServlet extends HttpServlet {
 //        }
         
         session.setAttribute("sessionId", sessionId);
+    }
+    
+    private void doAddToCart(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+
+        String itemName = (String) session.getAttribute("item");
+        if (itemName == null) {
+            userPath = pageCart;
+            return;
+        } 
+        
+
+    }
+    
+    private void doRemoveFromCart(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        
     }
     
     private void doDeleteItemFromList(HttpServletRequest request, HttpServletResponse response) {
