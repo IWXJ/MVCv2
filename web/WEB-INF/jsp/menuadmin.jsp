@@ -29,6 +29,7 @@
             <table border="1" cellpadding="5" cellspacing="10">
                 <tr>
                     <th>Delete</th>
+                    <th>Name</th>
                     <th>Item</th>
                     <th>Price</th>
                 </tr>
@@ -38,7 +39,8 @@
                             <form method="POST" action="deleteFromList.do?item=${pizza.name}">
                             <input type="submit" value="Delete"></form>
                         </td>
-                        <td>${pizza.desc}</td>
+                        <td>${pizza.name}</td>
+                        <td>${pizza.description}</td>
                         <td>${pizza.price}</td>
                     </tr>							
                 </c:forEach>

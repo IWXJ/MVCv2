@@ -1,8 +1,12 @@
 package controller;
 
+import Entity.Customer;
+import Entity.Pizza;
+import Entity.Session;
+import Entity.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,7 +23,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name="ControllerServlet",
             loadOnStartup = 1,
             urlPatterns = {"/cart.jsp",
-                           "/checkout.jsp",
                            "/index.jsp",
                            "/menu.jsp",
                            "/login.jsp",
@@ -28,8 +31,6 @@ import javax.servlet.http.HttpSession;
                            "/login.do",
                            "/registerUser.do",
                            "/order.do",
-                           "/addToCart.do",
-                           "/removeFromCart.do",
                            "/deleteFromList.do",
                            "/addItemToList.do",
                            "/menuSort.do",
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpSession;
                            "/cancelOrder.do",
                            "/confirmOrder.do",
                            "/alternativeDeliveryAddress.do",
+                           "/updateProductQuantity.do",
                            "/logout.do"
             })
 public class ControllerServlet extends HttpServlet {
@@ -60,33 +62,23 @@ public class ControllerServlet extends HttpServlet {
         
         redirect = true;
         switch (userPath) {
-            case "/cart.jsp":           showCart(request, response); break;
-            case "/checkout.jsp":       showCheckout(request, response); break;
-            case "/menu.jsp":           showMenu(request, response); break;
-            case "/menuadmin.jsp":      showMenuadmin(request, response); break;
-            case "/registeruser.jsp":   break;
-            case "/login.jsp":          showLogin(request, response); break;
-            case "/login.do":
-                doLoginUser(request, response);
-                break;
-            case "/order.do":           doAddOrder(request, response); break;
-            case "/addToCart.do":       doAddToCart(request, response); break;
-            case "/removeFromCart.do":  doRemoveFromCart(request, response); break;
-            case "/deleteFromList.do":  
-                doDeleteItemFromList(request, response); 
-                break;
-            case "/registerUser.do":    
-                doRegisterUser(request, response); 
-                break;
-            case "/addItemToList.do":   
-                doAddItemToList(request, response); 
-                break;
-            case "/menuSort.do":        doSortMenu(request, response); break;
-            case "/validateemail.do":   doValidateEmail(request, response); break;
-            case "/cancelOrder.do":     doCancelOrder(request, response); break;
-            case "/confirmOrder.do":    doConfirmOrder(request, response); break;
-            case "/alternativeDeliveryAddress.do":    doAlternativeDeliveryAddress(request, response); break;
-            case "/logout.do":          doLogout(request, response); break;
+            case "/cart.jsp":                           showCart(request, response); break;
+            case "/menu.jsp":                           showMenu(request, response); break;
+            case "/menuadmin.jsp":                      showMenuadmin(request, response); break;
+            case "/registeruser.jsp":                   break;
+            case "/login.jsp":                          showLogin(request, response); break;
+            case "/login.do":                           doLoginUser(request, response); break;
+            case "/order.do":                           doAddOrder(request, response); break;
+            case "/deleteFromList.do":                  doDeleteItemFromList(request, response); break;
+            case "/registerUser.do":                    doRegisterUser(request, response); break;
+            case "/addItemToList.do":                   doAddItemToList(request, response); break;
+            case "/menuSort.do":                        doSortMenu(request, response); break;
+            case "/validateemail.do":                   doValidateEmail(request, response); break;
+            case "/cancelOrder.do":                     doCancelOrder(request, response); break;
+            case "/confirmOrder.do":                    doConfirmOrder(request, response); break;
+            case "/alternativeDeliveryAddress.do":      doAlternativeDeliveryAddress(request, response); break;
+            case "/updateProductQuantity.do":           doUpdateProductQuantity(request, response); break;
+            case "/logout.do":                          doLogout(request, response); break;
             case "/index.jsp":
             default:                    userPath = "/index.jsp"; break;
         }
@@ -104,47 +96,32 @@ public class ControllerServlet extends HttpServlet {
 
     private void showCart(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String sessionId = (String) session.getAttribute("sessionId");
-//        if (sessionId == null) {
-//            userPath = pageLogin;
-//            return;
-//        } 
-           
-        Object returnObject = null;
-
-//        ListBasket lb = new ListBasket();
-//        try {
-//            returnObject = lb.getBasket(sessionId);
-//
-//        }  catch (InterruptedException ex) {
-//            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-       
+        Session custSession = (Session) session.getAttribute("custSession");
+        if (custSession == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        Order order = null;
+        order = Order.getOrder(custSession.getSessionId());
+        if (order == null || (!order.getStatus().equals("OPEN"))) {
+            userPath = pageIndex;
+            return;
+        }
+        
 // TO DO: 
 // Kode til at håndtere bladring
-        session.setAttribute("cartList", returnObject);
+        session.setAttribute("orderList", order);
         userPath = pageCart;
     }    
 
-    private void showCheckout(HttpServletRequest request, HttpServletResponse response) {
-        Object returnObject = null;
-        String session_id = request.getRequestedSessionId();
-
-//        ConfirmOrder co = new ConfirmOrder(session_id);
-//        try {
-//            returnObject = co.add();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
-// TO DO: 
-// Kode til at håndtere bladring
-        HttpSession session = request.getSession();
-        session.setAttribute("cartList", returnObject);
-        userPath = pageCheckOut;
-    }    
-
     private void showMenu(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            userPath = pageLogin;
+            return;
+        }
+
         String name = null;
         String desc = null;
         Double price = null;   
@@ -157,16 +134,10 @@ public class ControllerServlet extends HttpServlet {
             sortOrder = "name";
         }
 
-//        ListPizzas lp = new ListPizzas();
-//        try {
-//            pizzaList = lp.getPizza(sortOrder);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        pizzaList = Pizza.getPizzaList();
         
 // TO DO: 
 // Kode til at håndtere bladring
-        HttpSession session = request.getSession();
         session.setAttribute("pizzaList", pizzaList);
         userPath = pageMenu;
     }    
@@ -174,12 +145,6 @@ public class ControllerServlet extends HttpServlet {
     private void showMenuadmin(HttpServletRequest request, HttpServletResponse response) {
         Object pizzaList = null;
 
-//        ListPizzas lp = new ListPizzas();
-//        try {
-//            pizzaList = lp.getPizza("name");
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         
 // TO DO: 
 // Kode til at håndtere bladring
@@ -192,52 +157,46 @@ public class ControllerServlet extends HttpServlet {
     private void showLogin(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute("loginError");
+        userPath = pageLogin;
     }    
 
     private void doAddOrder(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        userPath = pageMenu;
-        
-        String sessionId = (String) session.getAttribute("sessionId");
-        if (sessionId == null) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
             userPath = pageLogin;
             return;
-        } 
-        
-        String user = (String) session.getAttribute("userId");
-        if (user == null) {
-            user = "Dummy";
         }
-        Integer quantity = 1;
-        String name = request.getParameter("item");
-        Double pr = Double.parseDouble(request.getParameter("price"));
-        Integer price = pr.intValue();
-        
-//        AddToBasket ab = new AddToBasket();
-//        Object result = ab.add(user, sessionId, name, quantity, price);
-//        if (result == "ERROR") {
-//            ab.deleteOrder(sessionId);
-//            userPath = pageLogin;
-//        }
-        
-        session.setAttribute("sessionId", sessionId);
-    }
-    
-    private void doAddToCart(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
 
-        String itemName = (String) session.getAttribute("item");
-        if (itemName == null) {
-            userPath = pageCart;
+        Session custSession = (Session) session.getAttribute("custSession");
+        if (custSession == null) {
+            userPath = pageLogin;
             return;
-        } 
+        }
         
-
-    }
-    
-    private void doRemoveFromCart(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        if (order == null) {
+            Customer cust = Customer.getCustomer(custSession.getCustomerId());
+            order = Order.addOrder(custSession.getSessionId(), custSession.getCustomerId(), "OPEN", cust.getStreet(), cust.getZipcode(), cust.getCity());
+        } else if (!"OPEN".equals(order.getStatus())) {
+            session.removeAttribute("order");
+            userPath = pageIndex;
+            return;
+        }
         
+        int pizzaId = Integer.parseInt(request.getParameter("pizzaId"));
+        if(order.addProductToOrder(pizzaId)) {                                 // If product could not be added to order list
+            session.setAttribute("custSession", custSession);
+            session.setAttribute("order", order);
+            userPath = pageMenu;
+            return;
+        } else {
+            order = null;
+            custSession = null;
+            session.removeAttribute("custSession");
+            session.removeAttribute("order");
+            userPath = pageIndex;
+            return;
+        }
     }
     
     private void doDeleteItemFromList(HttpServletRequest request, HttpServletResponse response) {
@@ -247,13 +206,12 @@ public class ControllerServlet extends HttpServlet {
             return;
         }
 
-//        AddPizza ab = new AddPizza();
-//        ab.deletePizza(itemName);
-        
         showMenuadmin(request, response);
     }
     
     private void doRegisterUser(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
@@ -262,19 +220,19 @@ public class ControllerServlet extends HttpServlet {
         String city = request.getParameter("city");
         Integer phone = Integer.parseInt(request.getParameter("phone"));
 
-//        CreateCustomer cust = new CreateCustomer();
-                
-//        Object result = cust.addCustomer(email, password, name, address, city, zipcode, phone);
-//        if (result == "OK") {
-//            showValidateEmail(email,request, response);
-//        } else if (result == "DUPLICATE") {
-//            userPath = pageLogin;
-//        }
-//        else {
-//            userPath = pageRegisterUser;
-//        }
-        
-        
+        Object cust = null;
+        try {
+            cust = Customer.addCustomer(email, password, name, address, city, zipcode, phone, false);
+        } catch (Customer.errorUserAlreadyRegistered ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            session.setAttribute("errorRegisterUser", ex.getMessage());
+            userPath = pageRegisterUser;
+        }
+
+        if (cust != null) {
+            session.setAttribute("customer", cust);
+            userPath = pageValidateEmail;
+        }
     }
     
     private void doLoginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -283,27 +241,69 @@ public class ControllerServlet extends HttpServlet {
             
         String userid = request.getParameter("email");
         String password = request.getParameter("password");
-//        Login login = new Login();
-//        try {
-//            returnObject = login.logintoApplication(userid,password);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
-        if ( returnObject=="OK" ) {
-            String session_Id = session.getId();
-            session.setAttribute("sessionId", session_Id);
-            session.setAttribute("userId", userid);
-            showMenu(request, response);
-            session.removeAttribute("loginError");
-        } else {
-            returnObject = "loginError";
-            session.setAttribute("loginError", returnObject);
-            userPath = pageLogin;
+
+        Session custSession = (Session) session.getAttribute("custSession");
+        Customer cust = null;
+        if (custSession == null) {
+            cust = Customer.loginCustomer(userid, password);
+            if (cust == null) {
+                returnObject = "loginError";
+                session.setAttribute("loginError", returnObject);
+                userPath = pageLogin;
+                return;
+            }
         }
+        custSession = new Session(session.getId(), cust.getCustomerId());
+        session.setAttribute("custSession", custSession);
+        session.removeAttribute("loginError");
+        showMenu(request, response);
+        if (cust.getStatusAdmin()) {
+            userPath = pageMenuAdmin;
+        } else {
+            userPath = pageMenu;
+        }
+        
+//        Session custSession = (Session) session.getAttribute("custSession");
+//        if (custSession == null) {
+//            Customer cust = Customer.getCustomer(userid);
+//            if (cust != null) {
+//                custSession = new Session(session.getId(), cust.getCustomerId());
+//            } else {
+//                userPath = pageRegisterUser;
+//                return;
+//            }
+//        }
+//        
+//        ArrayList<Customer> customerList = Customer.getCustomerList();
+//        for (Customer customerList1 : customerList) {
+//            String e = customerList1.getEmail();
+//            String p = customerList1.getPassword();
+//            if(e.equals(userid) && p.equals(password)) {
+//                returnObject = "OK";
+//                break;
+//            } 
+//        }
+//        
+//        if ( returnObject == "OK" ) {
+//            session.setAttribute("custSession", custSession);
+//            session.removeAttribute("loginError");
+//            showMenu(request, response);
+//            userPath = pageMenu;
+//        } else {
+//            returnObject = "loginError";
+//            session.setAttribute("loginError", returnObject);
+//            userPath = pageLogin;
+//        }
     }
     
     private void doAddItemToList(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        
+        if (session == null) {
+            userPath = pageLogin;
+            return;
+        }
+
         String name = null;
         String desc = null;
         Double price = null;   
@@ -321,9 +321,6 @@ public class ControllerServlet extends HttpServlet {
             price = Double.parseDouble(request.getParameter("price"));
         } 
 
-//        AddPizza ap = new AddPizza();
-//        result = ap.addPizza(name, desc, price);
-        
         showMenuadmin(request, response);
     }
     
@@ -332,53 +329,132 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void doValidateEmail(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            userPath = pageIndex;
+            return;
+        }
+        
         String email = (String) request.getParameter("email");
-        System.out.println(email);
-        showMenu(request, response);
-    }
-    
-    private void showValidateEmail(String emailToValidate, HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-
-// Use input argument emailToValidate instead.
-        String validateEmail = "obs@hotmail.dk";
-        session.setAttribute("validateEmail", validateEmail);
-        userPath = pageValidateEmail;
+        if(Customer.validateCustomer(email))
+            userPath = pageLogin;
+        else
+            userPath = pageIndex;
     }
     
     private void doCancelOrder(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        Order order = (Order) session.getAttribute("order");
+        Order.removeOrder(order);
+        session.removeAttribute("order");
+        
+        userPath = pageIndex;
+        return;
     }
     
     private void doConfirmOrder(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            userPath = pageLogin;
+            return;
+        }
+
+        Session custSession = (Session) session.getAttribute("custSession");
+        if (custSession == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        Order order = (Order) session.getAttribute("order");
+        if (order == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        order.setStatus("CLOSED");
+        session.setAttribute("custSession", custSession);
+        session.setAttribute("orderList", order);
         
         userPath = pageCheckOut;
     }
 
     private void doAlternativeDeliveryAddress(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        System.out.println(request.getParameter("alternativeAddressStreet"));
-        System.out.println(request.getParameter("alternativeAddressZipcode"));
-        System.out.println(request.getParameter("alternativeAddressCity"));
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            userPath = pageLogin;
+            return;
+        }
 
-//        PrintWriter out = null;
-//        response.setContentType("text/html;charset=UTF-8");
-//            try {
-//                out = response.getWriter();
-//            } catch (IOException ex) {
-//                Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        
-//        if (out != null) {
-//            out.println("Your pizza will be delivered at this address.");
-//        }
-
-        redirect = false;
+        Session custSession = (Session) session.getAttribute("custSession");
+        if (custSession == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        Order order = (Order) session.getAttribute("order");
+        if (order == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        int alternativeAddressZipcode = 0;
+        String alternativeAddressStreet = request.getParameter("alternativeAddressStreet");
+        try {
+            alternativeAddressZipcode = Integer.parseInt(request.getParameter("alternativeAddressZipcode"));
+        } catch (NumberFormatException e) {
+        }
+        
+        String alternativeAddressCity = request.getParameter("alternativeAddressCity");
+        
+        if (alternativeAddressStreet != null && alternativeAddressZipcode != 0 && alternativeAddressCity != null) {
+            order.setDeliveryAddressStreet(alternativeAddressStreet);
+            order.setDeliveryAddressZipcode(alternativeAddressZipcode);
+            order.setDeliveryAddressCity(alternativeAddressCity);
+            session.setAttribute("custSession", custSession);
+            session.setAttribute("orderList", order);
+        }
+  
+        userPath = pageCheckOut;
+//        redirect = false;
     }
 
     private void doLogout(HttpServletRequest request, HttpServletResponse response) {
-        
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("custSession");
+        session.removeAttribute("order");
         userPath = pageIndex;
+    }
+    
+    private void doUpdateProductQuantity(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            userPath = pageLogin;
+            return;
+        }
+
+        Session custSession = (Session) session.getAttribute("custSession");
+        if (custSession == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        Order order = (Order) session.getAttribute("order");
+        if (order == null) {
+            userPath = pageLogin;
+            return;
+        }
+        
+        int pizzaId =  Integer.parseInt(request.getParameter("pizzaId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        if (Order.updateOrderedProductQuantity(order, pizzaId, quantity)) {
+            order = Order.getOrder(custSession.getSessionId());
+            session.setAttribute("custSession", custSession);
+            session.setAttribute("orderList", order);
+            userPath = pageCart;
+        } else {
+            session.removeAttribute("orderList");
+            userPath = pageMenu;
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

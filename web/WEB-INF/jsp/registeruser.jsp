@@ -23,4 +23,9 @@
             </table>
             <input type="submit" value="Register">
         </form>
+        <div id="errorRegisterUser">
+            <c:if test="${errorRegisterUser != null}">
+                ${errorRegisterUser}
+            </c:if>
+        </div>
     </div>

@@ -13,25 +13,26 @@
         <p> <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
                     <th>Quantity</th>
-                    <th>Add</th>
-                    <th>Remove</th>
                     <th>Item</th>
+                    <th>Description</th>
                     <th>Price</th>
                 </tr>
-                <c:forEach items="${cartList}" var="item">
+                <c:forEach items="${orderList.orderedProductList}" var="item">
                     <tr>
-                        <td><form method="POST" action="addToCart.do?${item.name}">
-                                <input type="submit" value="Add"></form></td>
-                        <td><form method="POST" action="removeFromCart.do?${item.name}">
-                                <input type="submit" value="Remove"></form></td>
-                                <td>${item.quantity}</td>
-                                <td>${item.name}</td>
-                                <td>${item.price}</td>
+                        <td><form method="POST" action="updateProductQuantity.do">
+                                <input type="submit" value="Update">
+                                <input type="hidden" name="pizzaId" value="${item.pizzaId}">
+                                <input type="text" maxlength="2" size="2" name="quantity" value="${item.quantity}">
+                            </form>
+                        </td>
+                        <td>${item.name}</td>
+                        <td>${item.description}</td>
+                        <td>${item.price}</td>
                     </tr>
                 </c:forEach>
                 <tr>
-                    <th colspan="4" align="left">Total price: </th>
-                    <td>${orderTotalPrice}</td>
+                    <th colspan="3" align="left">Total price: </th>
+                    <td>${orderList.orderTotal}</td>
                 </tr>
             </table>
             <br>

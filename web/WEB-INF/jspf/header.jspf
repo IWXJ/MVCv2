@@ -149,9 +149,15 @@
                 <a href="/LaPizzeriaV2/login.jsp">Login</a>
             </div>
             <div class="headerWidget">
-                <a href="/LaPizzeriaV2/cart.jsp">View cart</a>
+                <a href="/LaPizzeriaV2/logout.do">Logout</a>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="headerWidget">
+                <a href="/LaPizzeriaV2/menu.jsp">Menu</a>
             </div>
             <div class="headerWidget">
-                <a href="/LaPizzeriaV2/logout.do">Logout</a>
+                <a href="/LaPizzeriaV2/cart.jsp">View cart</a>
             </div>
         </div>

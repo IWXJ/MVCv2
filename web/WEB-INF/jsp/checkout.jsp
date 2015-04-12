@@ -10,28 +10,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
     <div class="rightMenu">
         <p><h1>Your order</h1>
-        <p>Please verify your order before clicking 'Confirm'. Click 'Delete order' if you wish to change your order (you will have to start all over again).
+        <p>
         <p>
             <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
                     <th>Quantity</th>
                     <th>Item</th>
+                    <th>Description</th>
                     <th>Price</th>
                 </tr>
-                <c:forEach items="${itemList}" var="item">
+                <c:forEach items="${orderList.orderedProductList}" var="item">
                         <tr><td>${item.quantity}</td>
                         <td>${item.name}</td>
+                        <td>${item.description}</td>
                         <td>${item.price}</td>
                 </tr>							
                 </c:forEach>
                 <tr>
-                    <th colspan="2" align="left">Total price: </th>
-                    <td>${orderTotalPrice}</td>
+                    <th colspan="3" align="left">Total price: </th>
+                    <td>${orderList.orderTotal}</td>
                 </tr>
             </table>
         <p>
             Do you wish to have your pizzas delivered at an alternative address?
-            <input type="checkbox" name="alternativeAddressYes" id="alternativeAddressYes" onclick="showAlternativeDeliveryAddress()"/>
+            <input type="checkbox" name="alternativeAddressYes" id="alternativeAddressYes" onclick="return showAlternativeDeliveryAddress()"/>
             <div id="alternativeDeliveryAddress">
                 
             </div>
@@ -60,9 +62,11 @@
                             url: 'alternativeDeliveryAddress.do?alternativeAddressStreet=' 
                                 + encodeURIComponent(document.getElementById('alternativeAddressStreet').value) + 'alternativeAddressZipcode=' 
                                 + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value) + 'alternativeAddressCity=' 
-                                + encodeURIComponent(document.getElementById('alternativeAddressZipcode').value),
-                            success: function(data) {
-                                $('#resultAlternativeDeliveryAddress').html(data);
+                                + encodeURIComponent(document.getElementById('alternativeAddressCity').value),
+                            success: function(result) {
+//                                $('#resultAlternativeDeliveryAddress').attr("value",result);
+//                                $('#resultAlternativeDeliveryAddress').html(data);
+                                $('#resultAlternativeDeliveryAddress').append(result);
                             }
                         } );
                     return false;

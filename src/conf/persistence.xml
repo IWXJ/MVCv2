@@ -4,7 +4,10 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Entity.Order</class>
     <class>Entity.Pizza</class>
-    <class>Entity.Topping</class>
+    <class>Entity.Customer</class>
+    <class>Entity.OrderedPizza</class>
+    <class>Entity.Session</class>
+    <class>Entity.OrderedProduct</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/pizzabase"/>

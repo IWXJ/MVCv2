@@ -16,42 +16,41 @@ import javax.persistence.Id;
  * @author OBS
  */
 @Entity
-public class Topping implements Serializable {
+public class OrderedPizza implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String desc;
-    private Double price;
+    private Long pizzaId;
+    private int quantity;
 
+
+    // <editor-fold defaultstate="collapsed" desc="Get and Set methods. Click on the + sign on the left to edit the code.">
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public Long getPizzaId() {
+        return pizzaId;
     }
 
-    public String getDesc() {
-        return desc;
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Double getPrice() {
-        return price;
+    public void setPizzaId(Long pizzaId) {
+        this.pizzaId = pizzaId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
-
-    public void setDesc(String desc) {
-         this.desc = desc;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    
+    //</editor-fold>
 
     @Override
     public int hashCode() {
@@ -63,21 +62,19 @@ public class Topping implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Topping)) {
+        if (!(object instanceof OrderedPizza)) {
             return false;
         }
-        Topping other = (Topping) object;
+        OrderedPizza other = (OrderedPizza) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
-        return ( (other.name == this.name) 
-                && (other.desc == this.desc) 
-                && (other.price == this.price) ) ;
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Entity.Topping[ id=" + id + " ]";
+        return "Entity.OrderedPizza[ id=" + id + " ]";
     }
     
 }

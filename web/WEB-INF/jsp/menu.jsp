@@ -18,43 +18,24 @@
         <p>	
             <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
-                    <th>Order</th>
+                    <th>Quantity</th>
                     <th><a href="/LaPizzeriaV2/menu.jsp?sortOrder=name">Item</a></th>
                     <th>Description</th>
                     <th><a href="/LaPizzeriaV2/menu.jsp?sortOrder=price">Price</a></th>
                 </tr>
-                <tr>
-                    <td>${item}</td>
-                    <td></td>
-                    <td></td>
-                </tr>
                     <c:forEach items="${pizzaList}" var="pizza">
                         <tr>
                             <td>
-                                <form method="POST" action="order.do?item=${pizza.name}&price=${pizza.price}">
-                                <input type="submit" value="Order"></form>
+                                <form method="POST" action="order.do">
+                                    <input type="hidden" name="pizzaId" value="${pizza.id}">
+                                    <input type="submit" value="Order">
+                                </form>
                             </td>
                             <td>${pizza.name}</td>
-                            <td>${pizza.desc}</td>
+                            <td>${pizza.description}</td>
                             <td>${pizza.price}</td>
-                            <td><img class="hidden" id="image" src="LaPizzeria_logo.JPG"/> <span>Name</span></td>
                         </tr>							
                     </c:forEach>
-
-<!--                <div id="xxx">
-                    <tr>
-                        <td>ABC</td>
-                        <td>Olive</td>
-                        <td>84.55</td>
-                        <td><a href="#" onclick="ShowPicture('Style',1, 'LaPizzeria_logo.JPG')" onMouseOut="ShowPicture('Style',0)">Click Here To Show Image</a>
-                            <div class="imageBox" id="Style">
-                                <img src="" />
-                            </div>
-                        </td>
-                        <td><input type="button" value="MORE" onclick="addPizzaToMenuList('ABC','Olive',48.00)"/></td>
-                        <td><img class="hidden" id="image" src="LaPizzeria_logo.JPG"/> <span>Name</span></td>
-                    </tr>
-                </div>-->
             </table>
             <c:if test="${currentPage != 1}">
                 <a href="menu.do?page=${currentPage - 1}">Previous</a>
@@ -76,5 +57,9 @@
             <c:if test="${currentPage lt noOfPages}">
                 <a href="/LaPizzeriaV2/menu.jsp?page=${currentPage + 1}">Next</a>
             </c:if>
-    </div>
+<!--                <script src="../../jquery-1.11.0.js" type="text/javascript"></script>
+            <script type="text/javascript">-->
 
+        <p>
+                <a href="/LaPizzeriaV2/cart.jsp">Finish order</a>
+    </div>

@@ -11,6 +11,6 @@
     <div class="rightMenu">
         <p><h1>Validate your e-mail</h1>
         <p>Please click the link below to confirm your user.
-        <p><a href="/LaPizzeriaV2/validateemail.do?email=${validateEmail}">${validateEmail}</a>
+        <p><a href="/LaPizzeriaV2/validateemail.do?email=${customer.email}">Click here</a>
     </div>
 
