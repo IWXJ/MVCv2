@@ -45,7 +45,7 @@
                     </tr>							
                 </c:forEach>
             </table>
-            <c:if test="${currentPage != 1}">
+<!--            <c:if test="${currentPage != 1}">
                 <a href="menu.do?page=${currentPage - 1}">Previous</a>
             </c:if>
             <table border="1" cellpadding="10" cellspacing="20">
@@ -65,4 +65,5 @@
         <c:if test="${currentPage lt noOfPages}">
             <a href="menu.do?page=${currentPage + 1}">Next</a>
         </c:if>
+-->
     </div>

@@ -403,7 +403,6 @@ public class ControllerServlet extends HttpServlet {
             alternativeAddressZipcode = Integer.parseInt(request.getParameter("alternativeAddressZipcode"));
         } catch (NumberFormatException e) {
         }
-        
         String alternativeAddressCity = request.getParameter("alternativeAddressCity");
         
         if (alternativeAddressStreet != null && alternativeAddressZipcode != 0 && alternativeAddressCity != null) {
@@ -413,7 +412,10 @@ public class ControllerServlet extends HttpServlet {
             session.setAttribute("custSession", custSession);
             session.setAttribute("orderList", order);
         }
-  
+        
+        String result = "Your pizzas will be delivered at this address: " + alternativeAddressStreet + ", " + alternativeAddressZipcode + " " + alternativeAddressCity;
+        session.setAttribute("result", result);
+        
         userPath = pageCheckOut;
 //        redirect = false;
     }

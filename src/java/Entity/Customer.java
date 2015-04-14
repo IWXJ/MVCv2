@@ -28,7 +28,7 @@ public class Customer {
     public static void createCustomerList() {
         customerList = new ArrayList<>();
         customerList.add(new Customer("admin@lapizzeria.dk", "123", "Admin", "Street", "City", 2500, 41111111, true));
-        customerList.add(new Customer("obs@hotmail.dk", "N4k123.", "Ole", "Test", "Test", 2500, 51111111, false));
+        customerList.add(new Customer("a@b.dk", "Aaa123.", "Ole", "Test", "Test", 2500, 51111111, false));
     }
     
     public static ArrayList<Customer> getCustomerList() {
