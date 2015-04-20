@@ -143,12 +143,12 @@ public class ControllerServlet extends HttpServlet {
     }    
 
     private void showMenuadmin(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
         Object pizzaList = null;
-
+        pizzaList = Pizza.getPizzaList();
         
 // TO DO: 
 // Kode til at håndtere bladring
-        HttpSession session = request.getSession();
         session.setAttribute("pizzaList", pizzaList);
         userPath = pageMenuAdmin;
 
@@ -201,11 +201,13 @@ public class ControllerServlet extends HttpServlet {
     
     private void doDeleteItemFromList(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        String itemName = (String)request.getParameter("item");
-        if (itemName == null || itemName == "") {
+        String pId = request.getParameter("pizzaId");
+        if (pId == null || pId == "") {
             return;
         }
 
+        int pizzaId = Integer.parseInt(pId);
+        
         showMenuadmin(request, response);
     }
     
@@ -262,38 +264,9 @@ public class ControllerServlet extends HttpServlet {
         } else {
             userPath = pageMenu;
         }
-        
-//        Session custSession = (Session) session.getAttribute("custSession");
-//        if (custSession == null) {
-//            Customer cust = Customer.getCustomer(userid);
-//            if (cust != null) {
-//                custSession = new Session(session.getId(), cust.getCustomerId());
-//            } else {
-//                userPath = pageRegisterUser;
-//                return;
-//            }
-//        }
-//        
-//        ArrayList<Customer> customerList = Customer.getCustomerList();
-//        for (Customer customerList1 : customerList) {
-//            String e = customerList1.getEmail();
-//            String p = customerList1.getPassword();
-//            if(e.equals(userid) && p.equals(password)) {
-//                returnObject = "OK";
-//                break;
-//            } 
-//        }
-//        
-//        if ( returnObject == "OK" ) {
-//            session.setAttribute("custSession", custSession);
-//            session.removeAttribute("loginError");
-//            showMenu(request, response);
-//            userPath = pageMenu;
-//        } else {
-//            returnObject = "loginError";
-//            session.setAttribute("loginError", returnObject);
-//            userPath = pageLogin;
-//        }
+
+        returnObject = "OK";
+        session.setAttribute("returnObject", returnObject);
     }
     
     private void doAddItemToList(HttpServletRequest request, HttpServletResponse response) {
@@ -319,7 +292,8 @@ public class ControllerServlet extends HttpServlet {
 
         if(request.getParameter("name") != null) {
             price = Double.parseDouble(request.getParameter("price"));
-        } 
+        }
+        
 
         showMenuadmin(request, response);
     }
@@ -402,6 +376,7 @@ public class ControllerServlet extends HttpServlet {
         try {
             alternativeAddressZipcode = Integer.parseInt(request.getParameter("alternativeAddressZipcode"));
         } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
         String alternativeAddressCity = request.getParameter("alternativeAddressCity");
         
@@ -411,6 +386,7 @@ public class ControllerServlet extends HttpServlet {
             order.setDeliveryAddressCity(alternativeAddressCity);
             session.setAttribute("custSession", custSession);
             session.setAttribute("orderList", order);
+            System.out.println("Alternative delivery address: " + order.getDeliveryAddressStreet() + ", " + order.getDeliveryAddressCity());
         }
         
         String result = "Your pizzas will be delivered at this address: " + alternativeAddressStreet + ", " + alternativeAddressZipcode + " " + alternativeAddressCity;

@@ -66,9 +66,13 @@
                             success: function(result) {
 //                                $('#resultAlternativeDeliveryAddress').attr("value",result);
 //                                $('#resultAlternativeDeliveryAddress').html(data);
-                                $('#resultAlternativeDeliveryAddress').append(result);
+//                                $('#resultAlternativeDeliveryAddress').append(result);
+                                $('#resultAlternativeDeliveryAddress').html(result);
+                                window.alert("End of method");
+                                return false;
                             }
                         } );
+                    window.alert("End of method");
                     return false;
                 }
             </script>

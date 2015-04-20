@@ -32,6 +32,22 @@ public class Pizza implements Serializable {
         
         return pizzaList;
     }
+
+    public static boolean addPizzaToList(Pizza p) {
+        return pizzaList.add(p);
+    }
+    
+    public static boolean removePizzaFromList(int id) {
+        int i = 0;
+        for (Pizza pizzaList1 : pizzaList) {
+            if (pizzaList1.getId() == id) {
+                pizzaList.remove(i);
+                return true;
+            }
+            i++;
+        }
+        return false;
+    }
     
     int id;
     String name;
@@ -46,7 +62,7 @@ public class Pizza implements Serializable {
         this.description = description;
         this.price = price;
     }
-
+    
     public int getId() {
         return id;
     }

@@ -36,8 +36,10 @@
                 <c:forEach items="${pizzaList}" var="pizza">
                     <tr>
                         <td>
-                            <form method="POST" action="deleteFromList.do?item=${pizza.name}">
-                            <input type="submit" value="Delete"></form>
+                            <form method="POST" action="deleteFromList.do">
+                                <input type="hidden" name="pizzaId" value="${pizza.id}">
+                                <input type="submit" value="Delete">
+                            </form>
                         </td>
                         <td>${pizza.name}</td>
                         <td>${pizza.description}</td>

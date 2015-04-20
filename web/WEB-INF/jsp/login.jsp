@@ -15,11 +15,40 @@
                 <p>Error in username or password. Please try again.</p>
            <%}%>
         <p>
-        <form method="POST" action="login.do">
+        <form method="POST" action="login.do" onsubmit='return true;'>
                 <table>
                     <tr><td>E-mail: </td><td><input type="text" name="email" onchange="validateEmail(this)"></td></tr>
-                    <tr><td>Password: </td><td><input type="password" name="password"></td></tr>
+                    <tr><td>Password: </td><td><input type="password" name="password"></td></tr>s
                 </table>
-                <input type="submit" value="Login">
+            <input type="submit" onclick="return processLoginForm();" value="Login">
         </form>
+<!--        <div id='loginFormTag'>
+            
+        </div>
+-->        <div id="resultLoginForm">
+
+        </div>
     </div>
+<!--        <script>
+            window.onload = showLoginForm;
+        </script>-->
+        <script src="../../jquery-1.11.0.js" type="text/javascript"></script>
+            <script type="text/javascript">
+                function processLoginForm() { 
+                        window.alert("Start of method");
+                        $.ajax( {
+                            type: 'POST',
+                            url: 'login.do?email=' 
+                                + encodeURIComponent(document.getElementById('email').value) + 'password=' 
+                                + encodeURIComponent(document.getElementById('password').value),
+                            success: function(result) {
+                                $('#resultLoginForm').html(result);
+                                window.alert("End of method");
+                                return false;
+                            }
+                        } );
+                    window.alert("End of method");
+                    return false;
+                }
+            </script>
+

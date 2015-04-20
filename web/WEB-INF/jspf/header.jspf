@@ -121,7 +121,7 @@
         function showAlternativeDeliveryAddress() {
             var e = document.getElementById("alternativeDeliveryAddress");
             if(document.getElementById("alternativeAddressYes").checked) {
-                e.innerHTML = "<form name='alternativeDeliveryAddress' id='alternativeDeliveryAddress' onsubmit='processAlternativeDeliveryAddress();' action='alternativeDeliveryAddress.do' method='POST'><table>" +
+                e.innerHTML = "<form name='alternativeDeliveryAddress' id='alternativeDeliveryAddress' onsubmit='return processAlternativeDeliveryAddress();' action='alternativeDeliveryAddress.do' method='POST'><table>" +
                               "<tr><td>Address:</td><td><input type='text' name='alternativeAddressStreet' id='alternativeAddressStreet'></td></tr>" + 
                               "<tr><td>Zip code:</td><td><input type='text' name='alternativeAddressZipcode' id='alternativeAddressZipcode'></td></tr>" +
                               "<tr><td>City:</td><td><input type='text' name='alternativeAddressCity' id='alternativeAddressCity'></td></tr></table>" + 
@@ -131,6 +131,16 @@
             } else {
                 e.innerHTML = "";
             }
+        }
+        function showLoginForm() {
+            var e = document.getElementById("loginFormTag");
+            e.innerHTML = "<form method='POST' action='login.do' onsubmit='return false'>" +
+                          "<table>" + 
+                          "<tr><td>E-mail: </td><td><input type='text' name='email' onchange='validateEmail(this)'></td></tr>" + 
+                          "<tr><td>Password: </td><td><input type='password' name='password'></td></tr>" +
+                          "</table>" + 
+                          "<input type='submit' value='Login'>" + 
+                          "</form>";
         }
     </script>
 </head>
