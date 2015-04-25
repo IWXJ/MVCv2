@@ -35,7 +35,6 @@
         <script src="../../jquery-1.11.0.js" type="text/javascript"></script>
             <script type="text/javascript">
                 function processLoginForm() { 
-                        window.alert("Start of method");
                         $.ajax( {
                             type: 'POST',
                             url: 'login.do?email=' 

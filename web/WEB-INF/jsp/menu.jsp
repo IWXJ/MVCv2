@@ -15,7 +15,15 @@
     <div class="rightMenu">
         <p><h1>Menu</h1>
         <p>Select from the list below.
-        <p>	
+        <p>
+            <form method="GET" action="filterMenu.do">
+                <table>
+                    <tr><td>Minimum price: <input type="text" name="minPrice" value="0" size="3"/></td></tr>
+                    <tr><td>Maximum price: <input type="text" name="maxPrice" value="0" size="3"/></td></tr>
+                    <tr><td><input type="submit" value="Search"></td></tr>
+                </table>
+            </form>
+            
             <table border="1" cellpadding="10" cellspacing="20">
                 <tr>
                     <th>Quantity</th>

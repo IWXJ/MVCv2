@@ -33,6 +33,20 @@ public class Pizza implements Serializable {
         return pizzaList;
     }
 
+    public static ArrayList<Pizza> getPizzaList(double min, double max) {
+        if (pizzaList == null) {
+            createPizzaList();
+        }
+        
+        ArrayList<Pizza> pList = new ArrayList<>();
+        for (Pizza pl : pizzaList) {
+            if(pl.getPrice() >= min && pl.getPrice() <= max) {
+                pList.add(pl);
+            }
+        }
+        return pList;
+    }
+
     public static boolean addPizzaToList(Pizza p) {
         return pizzaList.add(p);
     }

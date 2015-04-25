@@ -40,6 +40,7 @@ import javax.servlet.http.HttpSession;
                            "/confirmOrder.do",
                            "/alternativeDeliveryAddress.do",
                            "/updateProductQuantity.do",
+                           "/filterMenu.do",
                            "/logout.do"
             })
 public class ControllerServlet extends HttpServlet {
@@ -78,6 +79,7 @@ public class ControllerServlet extends HttpServlet {
             case "/confirmOrder.do":                    doConfirmOrder(request, response); break;
             case "/alternativeDeliveryAddress.do":      doAlternativeDeliveryAddress(request, response); break;
             case "/updateProductQuantity.do":           doUpdateProductQuantity(request, response); break;
+            case "/filterMenu.do":                      showMenu(request, response); break;
             case "/logout.do":                          doLogout(request, response); break;
             case "/index.jsp":
             default:                    userPath = "/index.jsp"; break;
@@ -128,18 +130,56 @@ public class ControllerServlet extends HttpServlet {
         String sortOrder = "";
         Object pizzaList = null;
 
+        String minPrice = null;
+        String maxPrice = null;
+        boolean filterYes = false;
+        
         if(request.getParameter("sortOrder") != null) {
             sortOrder = request.getParameter("sortOrder");
         } else {
             sortOrder = "name";
         }
 
-        pizzaList = Pizza.getPizzaList();
+        
+        double min = 0;
+        double max = 99999.00;
+        minPrice = request.getParameter("minPrice");
+        maxPrice = request.getParameter("maxPrice");
+        
+        if(minPrice != null && minPrice != "") {
+            try {
+                min = Double.parseDouble(minPrice);
+                filterYes = true;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }        
+        if(maxPrice != null && maxPrice != "") {
+            try {
+                max = Double.parseDouble(maxPrice);
+                if (max >= min) {
+                    filterYes = true;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        } 
+        
+        if (filterYes && (min != 0 || max != 0)) {
+            pizzaList = Pizza.getPizzaList(min, max);
+        } else {
+            pizzaList = Pizza.getPizzaList();
+        }
         
 // TO DO: 
 // Kode til at håndtere bladring
-        session.setAttribute("pizzaList", pizzaList);
-        userPath = pageMenu;
+        if (pizzaList != null) {
+            session.setAttribute("pizzaList", pizzaList);
+            userPath = pageMenu;
+        } else {
+            userPath = pageIndex;
+            session.removeAttribute("pizzaList");
+        }
     }    
 
     private void showMenuadmin(HttpServletRequest request, HttpServletResponse response) {
